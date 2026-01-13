@@ -24,6 +24,7 @@ Unlike traditional RAG systems that rely on fixed-size text chunking, this proje
 ---
 
 ## 🧠 Architecture Overview
+```mermaid
 graph LR
     A[Supreme Court Judgment PDFs] --> B[PDF Ingestion & OCR]
     B --> C{Metadata Mapping}
