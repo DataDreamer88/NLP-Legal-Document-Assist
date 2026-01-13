@@ -24,44 +24,33 @@ Unlike traditional RAG systems that rely on fixed-size text chunking, this proje
 ---
 
 ## 🧠 Architecture Overview
-flowchart TD
+graph LR
     A[Supreme Court Judgment PDFs] --> B[PDF Ingestion & OCR]
+    B --> C{Metadata Mapping}
+    C -->|Direct Match| D[Structured Case Metadata]
+    C -->|Pattern Match| D
+    C -->|Fuzzy Match| D
 
-    B --> C[Multi-tier PDF to Metadata Mapping]
-    C --> C1[Direct Filename Matching]
-    C --> C2[Pattern-based Matching]
-    C --> C3[Fuzzy Matching]
+    B --> E{Section Segmentation}
+    E -->|Rules| F[Heuristic Parsing]
+    E -->|BERT| G[Section Classification]
 
-    B --> D[Section Segmentation Module]
-    D --> D1[Rule-based Heuristics]
-    D --> D2[BERT-based Section Classifier]
+    F --> H[Canonical Legal Sections]
+    G --> H
 
-    D --> E[Canonical Legal Sections]
-    E --> E1[Facts]
-    E --> E2[Issues]
-    E --> E3[Arguments]
-    E --> E4[Precedents]
-    E --> E5[Analysis]
-    E --> E6[Conclusion]
+    H --> I[Section-level Embeddings]
+    I --> J[FAISS Vector Index]
 
-    E --> F[Section-level Embeddings]
-    F --> G[FAISS Vector Index]
+    K[User Legal Query] --> L[Query Encoder]
+    L --> J
 
-    H[User Legal Query] --> I[Query Encoder]
-    I --> G
+    J --> M[Section-Aware Retrieval]
+    M --> N{Relevant Sections Found?}
+    N -->|Yes| O[LLM RAG Generation]
+    N -->|No| P[Retrieve Fallback Sections]
 
-    G --> J[Section-Aware Retriever]
-    J --> J1[Dense Similarity]
-    J --> J2[BM25 Lexical Score]
-    J --> J3[Section-Type Boosting]
-
-    J --> K[Retrieved Legal Sections]
-
-    K --> L[LLM with RAG Prompting]
-    L --> M[Legal Answer with Section Attribution]
-
-    L --> N[Judgment Outcome Prediction]
-
+    O --> Q[Answer with Section Attribution]
+    O --> R[Judgment Outcome Prediction]
 
 ---
 
