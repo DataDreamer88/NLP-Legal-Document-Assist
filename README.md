@@ -52,7 +52,7 @@ graph LR
 
     O --> Q[Answer with Section Attribution]
     O --> R[Judgment Outcome Prediction]
-
+```
 ---
 
 ## 📊 Dataset
